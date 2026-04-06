@@ -1,0 +1,290 @@
+<div class="user-management-page">
+  <app-navbar></app-navbar>
+  <div class="user-management-content">
+    <div class="container">
+      <!-- Header -->
+      <div class="user-management-header">
+        <div class="user-management-header-text">
+          <h1 class="user-management-title">👥 User Management</h1>
+          <p class="user-management-subtitle">
+            Manage users on your WriteSpace platform. Create new users or remove existing ones.
+          </p>
+        </div>
+      </div>
+
+      <!-- Create User Form -->
+      <div class="create-user-section">
+        <h2 class="section-title">Create New User</h2>
+
+        <div
+          *ngIf="createErrorMessage"
+          class="form-error-banner"
+          role="alert"
+        >
+          <span class="form-error-icon">⚠️</span>
+          <span>{{ createErrorMessage }}</span>
+        </div>
+
+        <div
+          *ngIf="createSuccessMessage"
+          class="form-success-banner"
+          role="status"
+        >
+          <span class="form-success-icon">✅</span>
+          <span>{{ createSuccessMessage }}</span>
+        </div>
+
+        <div class="create-user-card card">
+          <div class="card-body create-user-card-body">
+            <form
+              [formGroup]="createUserForm"
+              (ngSubmit)="onCreateUser()"
+              class="create-user-form"
+              novalidate
+            >
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="display_name" class="form-label">Display Name</label>
+                  <input
+                    id="display_name"
+                    type="text"
+                    class="form-input"
+                    [class.is-error]="isFieldInvalid('display_name')"
+                    formControlName="display_name"
+                    placeholder="Enter display name"
+                    autocomplete="name"
+                  />
+                  <span
+                    *ngIf="isFieldInvalid('display_name')"
+                    class="form-error"
+                  >
+                    <ng-container *ngIf="createUserForm.get('display_name')?.errors?.['required']">
+                      Display name is required.
+                    </ng-container>
+                    <ng-container *ngIf="createUserForm.get('display_name')?.errors?.['minlength']">
+                      Display name must be at least 2 characters.
+                    </ng-container>
+                  </span>
+                </div>
+
+                <div class="form-group">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    id="username"
+                    type="text"
+                    class="form-input"
+                    [class.is-error]="isFieldInvalid('username')"
+                    formControlName="username"
+                    placeholder="Choose a username"
+                    autocomplete="username"
+                  />
+                  <span
+                    *ngIf="isFieldInvalid('username')"
+                    class="form-error"
+                  >
+                    <ng-container *ngIf="createUserForm.get('username')?.errors?.['required']">
+                      Username is required.
+                    </ng-container>
+                    <ng-container *ngIf="createUserForm.get('username')?.errors?.['minlength']">
+                      Username must be at least 3 characters.
+                    </ng-container>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    id="password"
+                    type="password"
+                    class="form-input"
+                    [class.is-error]="isFieldInvalid('password')"
+                    formControlName="password"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                  />
+                  <span
+                    *ngIf="isFieldInvalid('password')"
+                    class="form-error"
+                  >
+                    <ng-container *ngIf="createUserForm.get('password')?.errors?.['required']">
+                      Password is required.
+                    </ng-container>
+                    <ng-container *ngIf="createUserForm.get('password')?.errors?.['minlength']">
+                      Password must be at least 6 characters.
+                    </ng-container>
+                  </span>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirm_password" class="form-label">Confirm Password</label>
+                  <input
+                    id="confirm_password"
+                    type="password"
+                    class="form-input"
+                    [class.is-error]="isFieldInvalid('confirm_password')"
+                    formControlName="confirm_password"
+                    placeholder="Confirm password"
+                    autocomplete="new-password"
+                  />
+                  <span
+                    *ngIf="isFieldInvalid('confirm_password')"
+                    class="form-error"
+                  >
+                    <ng-container *ngIf="createUserForm.get('confirm_password')?.errors?.['required']">
+                      Please confirm the password.
+                    </ng-container>
+                    <ng-container *ngIf="createUserForm.get('confirm_password')?.errors?.['passwordMismatch']">
+                      Passwords do not match.
+                    </ng-container>
+                  </span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="role" class="form-label">Role</label>
+                  <select
+                    id="role"
+                    class="form-select"
+                    formControlName="role"
+                  >
+                    <option value="viewer">Viewer</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+
+                <div class="form-group form-group-action">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg"
+                    [disabled]="isCreating"
+                  >
+                    {{ isCreating ? 'Creating...' : '➕ Create User' }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="users-table-section">
+        <h2 class="section-title">All Users</h2>
+        <ng-container *ngIf="allUsersDisplay.length > 0; else emptyUsers">
+          <div class="users-table-card card">
+            <div class="users-table-wrapper">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th class="table-th">User</th>
+                    <th class="table-th">Username</th>
+                    <th class="table-th">Role</th>
+                    <th class="table-th">Created</th>
+                    <th class="table-th table-th-actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of allUsersDisplay" class="table-row">
+                    <td class="table-td">
+                      <div class="table-user">
+                        <app-avatar
+                          [role]="user.role"
+                          [displayName]="user.display_name"
+                          size="sm"
+                        ></app-avatar>
+                        <span class="table-user-name">{{ user.display_name }}</span>
+                      </div>
+                    </td>
+                    <td class="table-td">
+                      <span class="table-username">{{ user.username }}</span>
+                    </td>
+                    <td class="table-td">
+                      <span
+                        class="badge"
+                        [ngClass]="user.role === 'admin' ? 'badge-admin' : 'badge-reader'"
+                      >
+                        {{ user.role === 'admin' ? '👑 Admin' : '📖 Viewer' }}
+                      </span>
+                    </td>
+                    <td class="table-td">
+                      <span class="table-date">{{ formatDate(user.created_at) }}</span>
+                    </td>
+                    <td class="table-td table-td-actions">
+                      <button
+                        *ngIf="canDeleteUser(user)"
+                        class="btn btn-sm btn-outline-secondary table-delete-btn"
+                        (click)="onDeleteUser(user.id)"
+                        aria-label="Delete user"
+                      >
+                        🗑️ Delete
+                      </button>
+                      <span
+                        *ngIf="!canDeleteUser(user)"
+                        class="table-protected-label"
+                      >
+                        —
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #emptyUsers>
+          <div class="empty-state card">
+            <div class="card-body empty-state-body text-center">
+              <span class="empty-state-icon">👥</span>
+              <h3 class="empty-state-title">No users yet</h3>
+              <p class="empty-state-text">
+                Create your first user using the form above.
+              </p>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Delete Confirmation Modal -->
+      <div
+        *ngIf="showDeleteConfirm"
+        class="delete-overlay"
+        (click)="cancelDelete()"
+      >
+        <div class="delete-dialog card" (click)="$event.stopPropagation()">
+          <div class="card-body delete-dialog-body">
+            <span class="delete-dialog-icon">⚠️</span>
+            <h3 class="delete-dialog-title">Delete User</h3>
+            <p class="delete-dialog-text">
+              Are you sure you want to delete this user? This action cannot be undone.
+            </p>
+            <div
+              *ngIf="deleteErrorMessage"
+              class="delete-error"
+              role="alert"
+            >
+              <span>{{ deleteErrorMessage }}</span>
+            </div>
+            <div class="delete-dialog-actions">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="cancelDelete()"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-primary delete-confirm-btn"
+                (click)="confirmDelete()"
+                [disabled]="isDeleting"
+              >
+                {{ isDeleting ? 'Deleting...' : 'Delete' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

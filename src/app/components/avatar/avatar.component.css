@@ -1,0 +1,46 @@
+:host {
+  display: inline-flex;
+}
+
+.avatar-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+  flex-shrink: 0;
+  color: var(--color-text-inverse, #ffffff);
+  font-weight: var(--font-weight-semibold, 600);
+  user-select: none;
+}
+
+.avatar-sm {
+  width: 2rem;
+  height: 2rem;
+}
+
+.avatar-sm .avatar-emoji {
+  font-size: 0.875rem;
+}
+
+.avatar-md {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.avatar-md .avatar-emoji {
+  font-size: 1.125rem;
+}
+
+.avatar-lg {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.avatar-lg .avatar-emoji {
+  font-size: 1.5rem;
+}
+
+.avatar-emoji {
+  line-height: 1;
+}

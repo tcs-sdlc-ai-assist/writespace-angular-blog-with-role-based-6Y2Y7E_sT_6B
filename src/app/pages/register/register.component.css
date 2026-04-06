@@ -1,0 +1,107 @@
+:host {
+  display: block;
+}
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-indigo-700) 0%, var(--color-violet-600) 50%, var(--color-pink-500) 100%);
+  padding: var(--spacing-4);
+}
+
+.register-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.register-card {
+  border: none;
+  box-shadow: var(--shadow-xl);
+}
+
+.register-card-body {
+  padding: var(--spacing-8);
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.register-icon {
+  font-size: var(--font-size-5xl);
+  display: block;
+  margin-bottom: var(--spacing-4);
+  line-height: 1;
+}
+
+.register-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-2);
+}
+
+.register-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
+.register-error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-6);
+}
+
+.register-error-icon {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.register-form .form-group:last-of-type {
+  margin-bottom: var(--spacing-6);
+}
+
+.register-footer {
+  margin-top: var(--spacing-6);
+  text-align: center;
+}
+
+.register-footer-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+}
+
+.register-footer-link {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.register-footer-link:hover {
+  color: var(--color-primary-hover);
+}
+
+@media (min-width: 768px) {
+  .register-card-body {
+    padding: var(--spacing-10);
+  }
+}

@@ -1,0 +1,107 @@
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar-container container">
+    <div class="navbar-brand">
+      <a routerLink="/" class="navbar-logo" aria-label="WriteSpace Home">
+        <span class="navbar-logo-icon">✍️</span>
+        <span class="navbar-logo-text">WriteSpace</span>
+      </a>
+    </div>
+
+    <button
+      class="navbar-toggle btn btn-ghost btn-icon"
+      (click)="toggleMobileMenu()"
+      [attr.aria-expanded]="mobileMenuOpen"
+      aria-controls="navbar-menu"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="navbar-toggle-icon">{{ mobileMenuOpen ? '✕' : '☰' }}</span>
+    </button>
+
+    <div
+      id="navbar-menu"
+      class="navbar-menu"
+      [class.navbar-menu-open]="mobileMenuOpen"
+    >
+      <ul class="navbar-links">
+        <li>
+          <a
+            routerLink="/"
+            routerLinkActive="navbar-link-active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="navbar-link"
+            (click)="closeMobileMenu()"
+          >
+            Home
+          </a>
+        </li>
+        <li *ngIf="currentUser">
+          <a
+            routerLink="/blogs"
+            routerLinkActive="navbar-link-active"
+            class="navbar-link"
+            (click)="closeMobileMenu()"
+          >
+            Blogs
+          </a>
+        </li>
+        <li *ngIf="currentUser && currentUser.role === 'admin'">
+          <a
+            routerLink="/admin/dashboard"
+            routerLinkActive="navbar-link-active"
+            class="navbar-link"
+            (click)="closeMobileMenu()"
+          >
+            Dashboard
+          </a>
+        </li>
+        <li *ngIf="currentUser && currentUser.role === 'admin'">
+          <a
+            routerLink="/admin/users"
+            routerLinkActive="navbar-link-active"
+            class="navbar-link"
+            (click)="closeMobileMenu()"
+          >
+            Users
+          </a>
+        </li>
+      </ul>
+
+      <div class="navbar-actions">
+        <ng-container *ngIf="currentUser; else guestActions">
+          <div class="navbar-user">
+            <app-avatar
+              [role]="currentUser.role"
+              [displayName]="currentUser.display_name"
+              size="sm"
+            ></app-avatar>
+            <span class="navbar-user-name">{{ currentUser.display_name }}</span>
+          </div>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            (click)="logout()"
+          >
+            Logout
+          </button>
+        </ng-container>
+        <ng-template #guestActions>
+          <a
+            routerLink="/login"
+            routerLinkActive="navbar-link-active"
+            class="btn btn-sm btn-outline"
+            (click)="closeMobileMenu()"
+          >
+            Login
+          </a>
+          <a
+            routerLink="/register"
+            routerLinkActive="navbar-link-active"
+            class="btn btn-sm btn-primary"
+            (click)="closeMobileMenu()"
+          >
+            Register
+          </a>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

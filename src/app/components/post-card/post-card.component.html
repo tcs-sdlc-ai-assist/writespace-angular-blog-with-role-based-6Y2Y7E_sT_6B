@@ -1,0 +1,30 @@
+<article class="post-card card card-interactive" (click)="onRead()">
+  <div class="post-card-body">
+    <div class="post-card-header">
+      <div class="post-card-meta">
+        <app-avatar
+          [role]="post.authorId === 'admin-001' ? 'admin' : 'viewer'"
+          [displayName]="post.authorName"
+          size="sm"
+        ></app-avatar>
+        <div class="post-card-meta-text">
+          <span class="post-card-author">{{ post.authorName }}</span>
+          <span class="post-card-date">{{ formattedDate }}</span>
+        </div>
+      </div>
+      <button
+        *ngIf="canEdit"
+        class="btn btn-sm btn-outline-secondary post-card-edit-btn"
+        (click)="onEdit($event)"
+        aria-label="Edit post"
+      >
+        ✏️ Edit
+      </button>
+    </div>
+    <h3 class="post-card-title">{{ post.title }}</h3>
+    <p class="post-card-excerpt">{{ post.content | excerpt:150 }}</p>
+  </div>
+  <div class="post-card-footer">
+    <span class="post-card-read-more">Read more →</span>
+  </div>
+</article>

@@ -1,0 +1,9 @@
+<div
+  class="avatar-container"
+  [ngClass]="'avatar-' + size"
+  [style.backgroundColor]="config.color"
+  [attr.aria-label]="displayName ? displayName + ' (' + role + ')' : role + ' avatar'"
+  role="img"
+>
+  <span class="avatar-emoji">{{ config.emoji }}</span>
+</div>

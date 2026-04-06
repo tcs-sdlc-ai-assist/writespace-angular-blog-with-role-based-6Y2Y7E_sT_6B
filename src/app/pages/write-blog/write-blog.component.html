@@ -1,0 +1,108 @@
+<div class="write-blog-page">
+  <app-navbar></app-navbar>
+  <div class="write-blog-content">
+    <div class="container container-narrow">
+      <div class="write-blog-header">
+        <h1 class="write-blog-title">{{ isEditMode ? '✏️ Edit Post' : '📝 Write a New Post' }}</h1>
+        <p class="write-blog-subtitle">
+          {{ isEditMode ? 'Update your blog post below.' : 'Share your thoughts with the WriteSpace community.' }}
+        </p>
+      </div>
+
+      <div
+        *ngIf="errorMessage"
+        class="write-blog-error"
+        role="alert"
+      >
+        <span class="write-blog-error-icon">⚠️</span>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <div class="write-blog-card card">
+        <div class="card-body write-blog-card-body">
+          <form
+            [formGroup]="postForm"
+            (ngSubmit)="onSubmit()"
+            class="write-blog-form"
+            novalidate
+          >
+            <div class="form-group">
+              <label for="title" class="form-label">Title</label>
+              <input
+                id="title"
+                type="text"
+                class="form-input"
+                [class.is-error]="isFieldInvalid('title')"
+                formControlName="title"
+                placeholder="Enter your post title"
+                maxlength="100"
+              />
+              <div class="form-meta">
+                <span
+                  *ngIf="isFieldInvalid('title')"
+                  class="form-error"
+                >
+                  <ng-container *ngIf="postForm.get('title')?.errors?.['required']">
+                    Title is required.
+                  </ng-container>
+                  <ng-container *ngIf="postForm.get('title')?.errors?.['maxlength']">
+                    Title must be at most 100 characters.
+                  </ng-container>
+                </span>
+                <span class="form-hint char-count">
+                  {{ postForm.get('title')?.value?.length || 0 }} / 100
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="content" class="form-label">Content</label>
+              <textarea
+                id="content"
+                class="form-textarea"
+                [class.is-error]="isFieldInvalid('content')"
+                formControlName="content"
+                placeholder="Write your blog post content here..."
+                rows="12"
+                maxlength="5000"
+              ></textarea>
+              <div class="form-meta">
+                <span
+                  *ngIf="isFieldInvalid('content')"
+                  class="form-error"
+                >
+                  <ng-container *ngIf="postForm.get('content')?.errors?.['required']">
+                    Content is required.
+                  </ng-container>
+                  <ng-container *ngIf="postForm.get('content')?.errors?.['maxlength']">
+                    Content must be at most 5000 characters.
+                  </ng-container>
+                </span>
+                <span class="form-hint char-count">
+                  {{ postForm.get('content')?.value?.length || 0 }} / 5000
+                </span>
+              </div>
+            </div>
+
+            <div class="write-blog-actions">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="onCancel()"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="isSubmitting"
+              >
+                {{ isSubmitting ? (isEditMode ? 'Updating...' : 'Publishing...') : (isEditMode ? 'Update Post' : 'Publish Post') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

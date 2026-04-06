@@ -1,0 +1,150 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero gradient-hero">
+    <div class="container hero-container">
+      <h1 class="hero-title animate-fade-in-up">
+        <span class="hero-title-icon">✍️</span>
+        Welcome to <span class="hero-brand">WriteSpace</span>
+      </h1>
+      <p class="hero-tagline animate-fade-in-up">
+        A modern, privacy-first blogging platform. Write, share, and manage your content — all stored locally in your browser.
+      </p>
+      <div class="hero-actions animate-fade-in-up">
+        <a
+          *ngIf="currentUser"
+          routerLink="/blogs"
+          class="btn btn-lg btn-gradient hero-btn"
+        >
+          📚 Read Blogs
+        </a>
+        <a
+          *ngIf="!currentUser"
+          routerLink="/register"
+          class="btn btn-lg btn-gradient hero-btn"
+        >
+          🚀 Get Started
+        </a>
+        <a
+          *ngIf="!currentUser"
+          routerLink="/login"
+          class="btn btn-lg btn-outline hero-btn hero-btn-outline"
+        >
+          Login
+        </a>
+        <a
+          *ngIf="currentUser && currentUser.role === 'admin'"
+          routerLink="/admin/dashboard"
+          class="btn btn-lg btn-outline hero-btn hero-btn-outline"
+        >
+          📊 Dashboard
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title text-center">Why WriteSpace?</h2>
+      <div class="features-grid grid grid-cols-1 md:grid-cols-3">
+        <div class="feature-card card card-gradient animate-fade-in-up">
+          <div class="card-body feature-card-body">
+            <span class="feature-icon">🔒</span>
+            <h3 class="feature-title">Privacy First</h3>
+            <p class="feature-description">
+              All your data stays in your browser. No servers, no tracking, no third-party access. Your content is truly yours.
+            </p>
+          </div>
+        </div>
+        <div class="feature-card card card-gradient animate-fade-in-up">
+          <div class="card-body feature-card-body">
+            <span class="feature-icon">👥</span>
+            <h3 class="feature-title">Role-Based Access</h3>
+            <p class="feature-description">
+              Admins manage users and all content. Viewers create and manage their own posts. Simple, effective permissions.
+            </p>
+          </div>
+        </div>
+        <div class="feature-card card card-gradient animate-fade-in-up">
+          <div class="card-body feature-card-body">
+            <span class="feature-icon">⚡</span>
+            <h3 class="feature-title">Instant Performance</h3>
+            <p class="feature-description">
+              No loading spinners, no network delays. Everything runs locally for a blazing-fast experience.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Posts Section -->
+  <section class="latest-section">
+    <div class="container">
+      <h2 class="section-title text-center">Latest Posts</h2>
+      <ng-container *ngIf="latestPosts.length > 0; else emptyPosts">
+        <div class="latest-grid grid grid-cols-1 md:grid-cols-3">
+          <app-post-card
+            *ngFor="let post of latestPosts"
+            [post]="post"
+            [currentUser]="currentUser"
+            (readPost)="onReadPost($event)"
+            (editPost)="onEditPost($event)"
+          ></app-post-card>
+        </div>
+        <div class="latest-actions text-center" *ngIf="currentUser">
+          <a routerLink="/blogs" class="btn btn-outline">
+            View All Posts →
+          </a>
+        </div>
+      </ng-container>
+      <ng-template #emptyPosts>
+        <div class="empty-state card">
+          <div class="card-body empty-state-body text-center">
+            <span class="empty-state-icon">📝</span>
+            <h3 class="empty-state-title">No posts yet</h3>
+            <p class="empty-state-text">
+              Be the first to share your thoughts on WriteSpace!
+            </p>
+            <a
+              *ngIf="currentUser"
+              routerLink="/blogs/write"
+              class="btn btn-primary"
+            >
+              Write Your First Post
+            </a>
+            <a
+              *ngIf="!currentUser"
+              routerLink="/register"
+              class="btn btn-primary"
+            >
+              Sign Up to Start Writing
+            </a>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="home-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span class="footer-logo-icon">✍️</span>
+          <span class="footer-logo-text">WriteSpace</span>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a routerLink="/" class="footer-link">Home</a>
+          <a *ngIf="currentUser" routerLink="/blogs" class="footer-link">Blogs</a>
+          <a *ngIf="!currentUser" routerLink="/login" class="footer-link">Login</a>
+          <a *ngIf="!currentUser" routerLink="/register" class="footer-link">Register</a>
+          <a *ngIf="currentUser && currentUser.role === 'admin'" routerLink="/admin/dashboard" class="footer-link">Dashboard</a>
+        </nav>
+        <p class="footer-copyright">
+          © {{ currentYear }} WriteSpace. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+</div>
